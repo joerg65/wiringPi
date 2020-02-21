@@ -54,9 +54,10 @@
 #include <asm/ioctl.h>
 #include <linux/i2c.h>
 #include <linux/i2c-dev.h>
-
+#include <sys/stat.h>
 #include "wiringPi.h"
 #include "wiringPiI2C.h"
+
 
 uint8_t fdToSlaveAddress[1024] = { 0xFF };
 
@@ -238,12 +239,19 @@ int wiringPiI2CSetup (const int devId)
 {
 	int model, rev, mem, maker, overVolted ;
 	const char *device = NULL;
+	struct stat buffer;
 
 	piBoardId (&model, &rev, &mem, &maker, &overVolted) ;
 
 	switch(model)	{
 	case MODEL_ODROID_C1:
 	case MODEL_ODROID_C2:
+	if (stat ("/dev/i2c-0", &buffer) == 0) {
+		device = "/dev/i2c-0";
+	} else {
+		device = "/dev/i2c-1";
+	}
+	break;
 	case MODEL_ODROID_XU3:
 		device = "/dev/i2c-1";
 	break;
