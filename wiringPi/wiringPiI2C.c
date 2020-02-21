@@ -246,11 +246,11 @@ int wiringPiI2CSetup (const int devId)
 	switch(model)	{
 	case MODEL_ODROID_C1:
 	case MODEL_ODROID_C2:
-	if (stat ("/dev/i2c-0", &buffer) == 0) {
-		device = "/dev/i2c-0";
-	} else {
-		device = "/dev/i2c-1";
-	}
+		if (stat ("/dev/i2c-0", &buffer) == 0) {
+			device = "/dev/i2c-0";
+		} else {
+			device = "/dev/i2c-1";
+		}
 	break;
 	case MODEL_ODROID_XU3:
 		device = "/dev/i2c-1";
